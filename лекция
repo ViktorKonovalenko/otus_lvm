@@ -1,0 +1,32 @@
+Просмотр логических разделов lvm 
+<pre>lvs</pre>
+
+Пролсмотр физических разделов lvm
+<pre>pvs</pre>
+
+Просмотр volume групп в lvm
+<pre>vgs</pre>
+
+Перемещение логичекского тома в lvm
+<pre>pvmove /dev/sda1</pre>
+
+Удалениеи раздела lvm из lvm
+<pre>pvremove /dev/sda1</pre>
+
+<h2>СНАПШОТЫ</h2>
+Сделать снапшот
+<pre>lvcreate --snapshot -n sn_t01 -L 20M tmp_vg01/t01</pre>
+Восстановить из снапшота
+
+
+отмонтируем оригинальный раздел 
+umount /mnt/01
+
+отмонтируем снапшот 
+umount /mnt/04
+
+Восстановим из снапшота
+lvconvert --merge /dev/mapper/tmp_vg01-sn_t01
+
+
+<pre></pre>
