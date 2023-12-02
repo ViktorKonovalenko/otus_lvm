@@ -7,15 +7,74 @@
 Просмотр volume групп в lvm
 <pre>vgs</pre>
 
+Создание физических разделов lvm
+<pre>pvcreate /dev/sdb</pre>
+
+Создание volume группы lvm
+<pre>vgcreate /dev/sdb</pre>
+
+Создание lvm раздела 
+<pre>lvcreate -l+80%FREE -n test otus</pre>
+test- имя раздела
+otus- имя volume group
+
+
+Просмотр информации о созданном Volume Group
+<pre>vgdisplay otus</pre>
+
+Просмотр информации о созданном logical volume
+<pre>lvdisplay /dev/otus/test</pre>
+
+
+Расширение Volume group с помощью добавления другого диска 
+Создаем phisical volume
+<pre>pvcreate /dev/sdc</pre>
+
+Расширяем Volume group
+<pre>vgextend otus /dev/sdc</pre>
+
+<h3>ЮУменьшение LVM </h3>
+Для начала нужно отмонтирвоать раздел 
+<pre>umount /data</pre>
+Проверим файловую систему раздела
+<pre>e2fsck -fy /dev/otus/test</pre>
+Указываем файловой системе ее новый размер
+<pre>resize2fs /dev/otus/test 10G</pre>
+Уменьшаем размер lv
+<pre>lvreduce /dev/otus/test -L 10G</pre>
+Монтируем обратно раздел 
+<pre>mount /dev/otus/test /data/</pre>
+
 Перемещение логичекского тома в lvm
 <pre>pvmove /dev/sda1</pre>
 
 Удалениеи раздела lvm из lvm
 <pre>pvremove /dev/sda1</pre>
 
+
+
+<h3>Создание зеркала LVM</h3>
+Создаем физ разделы из двух дисков
+
+<pre>pvcreate /dev/sd{d,e}</pre>
+
+Создаем volume group из двух дисков
+
+<pre>vgcreate vg0 /dev/sd{d,e}</pre>
+
+Создаем логически раздел зеркало
+<pre>lvcreate -l+80%FREE -m1 -n test-mirror vg0</pre>
+
+
+
+
 <h2>СНАПШОТЫ</h2>
 Сделать снапшот
 <pre>lvcreate --snapshot -n sn_t01 -L 20M tmp_vg01/t01</pre>
+
+
+
+
 Восстановить из снапшота
 
 
